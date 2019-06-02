@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ElectronicRoom</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_categories">Create Categories</string>
+    <string name="categories_list">Categories List</string>
+    <string name="save">Save</string>
+    <string name="create_products">Create Products</string>
+    <string name="name">Name</string>
+</resources>
