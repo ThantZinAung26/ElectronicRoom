@@ -44,7 +44,11 @@ public class CategoryFragment extends Fragment {
 
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+//      recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
+
+        recyclerView.setAdapter(categoryAdapter);
 
         FloatingActionButton fab = view.findViewById(R.id.btn_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +61,7 @@ public class CategoryFragment extends Fragment {
         getMainCategory();
         return view;
     }
+
 
     public void getMainCategory() {
         class GetMainCategory extends AsyncTask<Void, Void, List<MainCategory>> {
@@ -73,9 +78,7 @@ public class CategoryFragment extends Fragment {
             @Override
             protected void onPostExecute(List<MainCategory> mainCategories) {
                 super.onPostExecute(mainCategories);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-                recyclerView.setAdapter(categoryAdapter);
+                categoryAdapter.submitList(mainCategories);
             }
         }
 

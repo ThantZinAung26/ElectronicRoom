@@ -67,7 +67,7 @@ public class CategoryActivity extends AppCompatActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 finish();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                //startActivity(new Intent(getApplicationContext(), MainApplication.class));
                 Toast.makeText(getApplicationContext(), "Save Finish.", Toast.LENGTH_SHORT).show();
             }
         }
