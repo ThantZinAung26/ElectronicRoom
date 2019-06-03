@@ -76,25 +76,4 @@
         app:layout_constraintTop_toTopOf="@+id/productTitle"
         app:strokeColor="@color/colorPrimary" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Products List"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/releaseDate"
-        app:layout_constraintTop_toBottomOf="@+id/releaseDate" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:listitem="@layout/activity_product_view" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
