@@ -3,10 +3,11 @@ package com.soft.electronicroom.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(tableName = "main_category")
-public class MainCategory {
+public class MainCategory implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;

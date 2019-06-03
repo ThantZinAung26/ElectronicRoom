@@ -1,9 +1,13 @@
 package com.soft.electronicroom;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,23 +33,46 @@ public class CategoryActivity extends AppCompatActivity {
         saveBtn = findViewById(R.id.categorySave);
 
         categoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        categoryRepo = new MainCategoryRepo(MainApplication.getInstance(getApplicationContext())
-                .getCreateDatabase().mainCategoryDAO());
-
-        categoryArrayAdapter.addAll(categoryRepo.findall());
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MainCategory mainCategory = new MainCategory();
-
-                mainCategory.setName(categoryName.getText().toString());
-
-                finish();
-
+                saveCategory();
             }
         });
 
+    }
+
+    private void saveCategory() {
+        final String cName = categoryName.getText().toString();
+        if (cName.isEmpty()) {
+            categoryName.setError("Name required!");
+            categoryName.requestFocus();
+            return;
+        }
+
+        class SaveCategory extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MainCategory mainCategory = new MainCategory();
+                mainCategory.setName(cName);
+
+                MainApplication.getInstance(getApplicationContext()).getCreateDatabase().mainCategoryDAO().save(mainCategory);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "Save Finish.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        SaveCategory sc = new SaveCategory();
+        sc.execute();
     }
 }

@@ -17,7 +17,7 @@ public class MainCategoryRepo {
         mainCategoryDAO.save(mainCategory);
     }
 
-    public List<MainCategory> findall(){
+    public List<MainCategory> findAll(){
         return mainCategoryDAO.findAll();
     }
 }
