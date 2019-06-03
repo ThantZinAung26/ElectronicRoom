@@ -34,7 +34,6 @@ public class CategoryAdapter extends ListAdapter<MainCategory, CategoryAdapter.C
         }
     };
 
-
     public CategoryAdapter() {
         super(DIFF_UTIL);
     }
