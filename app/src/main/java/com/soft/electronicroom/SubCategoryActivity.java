@@ -49,7 +49,21 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         /*MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());*/
 
-        subCategory = new SubCategory();
+    }
+
+    private void saveSubCategory(){
+        final String cTitle = editTitle.getText().toString();
+        final String cDate = editReleaseDate.getText().toString();
+        final String cCategory = editCategory.getText().toString();
+        if (cTitle.isEmpty()) {
+            editTitle.setError("Title Required");
+        } else if (cDate.isEmpty()){
+            editReleaseDate.setError("Date Required");
+
+        } else if (cCategory.isEmpty()) {
+            editCategory.setError("Category required");
+        }
+
 
     }
 }
