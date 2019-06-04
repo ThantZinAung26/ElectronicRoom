@@ -7,6 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity(tableName = "sub_category", indices = @Index("mainCategory_id"),
                 foreignKeys = @ForeignKey(entity = MainCategory.class,
@@ -56,5 +57,31 @@ public class SubCategory {
 
     public void setMainCategoryId(int mainCategoryId) {
         this.mainCategoryId = mainCategoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SubCategory that = (SubCategory) o;
+        return id == that.id &&
+                mainCategoryId == that.mainCategoryId &&
+                name.equals(that.name) &&
+                release.equals(that.release);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, release, mainCategoryId);
+    }
+
+    @Override
+    public String toString() {
+        return "SubCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", release=" + release +
+                ", mainCategoryId=" + mainCategoryId +
+                '}';
     }
 }

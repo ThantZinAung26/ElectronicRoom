@@ -7,4 +7,5 @@
     <string name="save">Save</string>
     <string name="create_products">Create Products</string>
     <string name="name">Name</string>
+    <string name="date">Date</string>
 </resources>

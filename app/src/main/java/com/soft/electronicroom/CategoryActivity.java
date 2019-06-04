@@ -40,7 +40,6 @@ public class CategoryActivity extends AppCompatActivity {
                 saveCategory();
             }
         });
-
     }
 
     private void saveCategory() {
