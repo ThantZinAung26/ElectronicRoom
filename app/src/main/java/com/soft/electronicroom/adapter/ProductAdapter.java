@@ -3,6 +3,7 @@ package com.soft.electronicroom.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -57,9 +58,9 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        final TextInputEditText editTitle;
-        final TextInputEditText editReleaseDate;
-        final TextInputEditText editCategory;
+        final TextView editTitle;
+        final TextView editReleaseDate;
+        final TextView editCategory;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);

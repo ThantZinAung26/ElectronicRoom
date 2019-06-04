@@ -20,4 +20,8 @@ public class MainCategoryRepo {
     public List<MainCategory> findAll(){
         return mainCategoryDAO.findAll();
     }
+
+    public MainCategory findById(int id){
+        return mainCategoryDAO.findById(id);
+    }
 }

@@ -21,4 +21,7 @@ public interface MainCategoryDAO {
     @Query("SELECT * FROM main_category")
     List<MainCategory> findAll();
 
+    @Query("SELECT * FROM main_category WHERE id = :id LIMIT 1")
+    MainCategory findById(int id);
+
 }

@@ -21,7 +21,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     private TextInputEditText categoryName;
     private Button saveBtn;
-    private ArrayAdapter<MainCategory> categoryArrayAdapter;
+
     private MainCategoryRepo categoryRepo;
 
     @Override
@@ -31,8 +31,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         categoryName = findViewById(R.id.ed_title);
         saveBtn = findViewById(R.id.categorySave);
-
-        categoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
