@@ -46,8 +46,6 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SubCategory subCategory = getItem(position);
         holder.editTitle.setText(subCategory.getName());
-        holder.editReleaseDate.setText((CharSequence) subCategory.getRelease());
-        holder.editCategory.setText(subCategory.getRelease().toString());
     }
 
     public interface OnAdapterItemClickListener {

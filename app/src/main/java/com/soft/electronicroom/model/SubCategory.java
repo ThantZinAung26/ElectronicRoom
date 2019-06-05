@@ -22,8 +22,6 @@ public class SubCategory {
 
     private String name;
 
-    private Date release;
-
     @ColumnInfo(name = "mainCategory_id")
     private int mainCategoryId;
 
@@ -43,14 +41,6 @@ public class SubCategory {
         this.name = name;
     }
 
-    public Date getRelease() {
-        return release;
-    }
-
-    public void setRelease(Date release) {
-        this.release = release;
-    }
-
     public int getMainCategoryId() {
         return mainCategoryId;
     }
@@ -66,22 +56,11 @@ public class SubCategory {
         SubCategory that = (SubCategory) o;
         return id == that.id &&
                 mainCategoryId == that.mainCategoryId &&
-                name.equals(that.name) &&
-                release.equals(that.release);
+                name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, release, mainCategoryId);
-    }
-
-    @Override
-    public String toString() {
-        return "SubCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", release=" + release +
-                ", mainCategoryId=" + mainCategoryId +
-                '}';
+        return Objects.hash(id, name, mainCategoryId);
     }
 }

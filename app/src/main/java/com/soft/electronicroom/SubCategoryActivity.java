@@ -1,6 +1,7 @@
 package com.soft.electronicroom;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -42,28 +43,26 @@ public class SubCategoryActivity extends AppCompatActivity {
         spinnerDate = findViewById(R.id.date_spinner);
         spinnerCategory = findViewById(R.id.category_spinner);
 
-        mainCategoryRepo = new MainCategoryRepo(MainApplication.getInstance(this).getCreateDatabase().mainCategoryDAO());
+//        mainCategoryRepo = new MainCategoryRepo(MainApplication.getInstance(this).getCreateDatabase().mainCategoryDAO());
 
         categoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
+
+        //TODO thread runnable
+//        categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
 
         /*MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());*/
 
-    }
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread saveThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-    private void saveSubCategory(){
-        final String cTitle = editTitle.getText().toString();
-        final String cDate = editReleaseDate.getText().toString();
-        final String cCategory = editCategory.getText().toString();
-        if (cTitle.isEmpty()) {
-            editTitle.setError("Title Required");
-        } else if (cDate.isEmpty()){
-            editReleaseDate.setError("Date Required");
-
-        } else if (cCategory.isEmpty()) {
-            editCategory.setError("Category required");
-        }
-
+                    }
+                });
+            }
+        });
 
     }
 }
