@@ -1,32 +1,30 @@
 package com.soft.electronicroom.database;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.room.Room;
 
-public class MainApplication {
+public class MainApplication extends Application {
 
-    private Context mContext;
+    private static CreateDatabase createDatabase;
 
-    private CreateDatabase createDatabase;
-
-    private static MainApplication mInstance;
-
-    public MainApplication(Context mContext) {
-        this.mContext = mContext;
-        this.createDatabase = Room.databaseBuilder(mContext, CreateDatabase.class, "electronic_room").build();
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
-    public static synchronized MainApplication getInstance(Context mContext) {
+    public static CreateDatabase getCreateDatabase(final Context mContext) {
 
-        if (mInstance == null) {
-            mInstance = new MainApplication(mContext);
+        if (createDatabase == null) {
+            createDatabase = Room.databaseBuilder(mContext, CreateDatabase.class, "electronic")
+                    .build();
         }
 
-        return mInstance;
+        return createDatabase;
     }
 
-    public CreateDatabase getCreateDatabase() {
-        return createDatabase;
+    public static void setCreateDatabase(CreateDatabase createDatabase) {
+        MainApplication.createDatabase = createDatabase;
     }
 }

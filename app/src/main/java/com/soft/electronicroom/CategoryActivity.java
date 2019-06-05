@@ -1,13 +1,9 @@
 package com.soft.electronicroom;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,28 +15,63 @@ import com.soft.electronicroom.repo.MainCategoryRepo;
 
 public class CategoryActivity extends AppCompatActivity {
 
+    static final String CATEGORY_KEY_ID = "mainCategory_id";
+
     private TextInputEditText categoryName;
     private Button saveBtn;
 
     private MainCategoryRepo categoryRepo;
+    private MainCategory mainCategory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        final int id = getIntent().getIntExtra(CATEGORY_KEY_ID,0);
+
         categoryName = findViewById(R.id.ed_title);
         saveBtn = findViewById(R.id.categorySave);
+
+        categoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(this).mainCategoryDAO());
+
+        if (id > 0) {
+
+            Thread findThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mainCategory = categoryRepo.findById(id);
+                    final String name = categoryRepo.findById(id).getName();
+                    Log.d("ID","id_"+mainCategory.getName());
+                    //TODO ERROR categoryName.setText(name);
+                }
+            });
+
+            findThread.start();
+
+
+        } else {
+            mainCategory = new MainCategory();
+        }
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveCategory();
+                saveCategoryCheck();
+                mainCategory.setName(categoryName.getText().toString());
+                Thread saveThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        categoryRepo.save(mainCategory);
+                    }
+                });
+                saveThread.start();
+                finish();
             }
         });
     }
 
-    private void saveCategory() {
+    private void saveCategoryCheck() {
         final String cName = categoryName.getText().toString();
         if (cName.isEmpty()) {
             categoryName.setError("Name required!");
@@ -48,28 +79,5 @@ public class CategoryActivity extends AppCompatActivity {
             return;
         }
 
-        class SaveCategory extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                MainCategory mainCategory = new MainCategory();
-                mainCategory.setName(cName);
-
-                MainApplication.getInstance(getApplicationContext()).getCreateDatabase().mainCategoryDAO().save(mainCategory);
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                finish();
-                //startActivity(new Intent(getApplicationContext(), MainApplication.class));
-                Toast.makeText(getApplicationContext(), "Save Finish.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        SaveCategory sc = new SaveCategory();
-        sc.execute();
     }
 }

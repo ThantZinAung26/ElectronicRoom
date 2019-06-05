@@ -44,11 +44,4 @@ public class MainCategory implements Serializable {
         return Objects.hash(id, name);
     }
 
-    @Override
-    public String toString() {
-        return "MainCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

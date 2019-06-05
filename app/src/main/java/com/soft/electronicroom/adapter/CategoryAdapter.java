@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soft.electronicroom.R;
-import com.soft.electronicroom.listener.OnAdapterItemClickListener;
 import com.soft.electronicroom.model.MainCategory;
 
 import java.util.List;
 
-public class CategoryAdapter extends ListAdapter<MainCategory, CategoryAdapter.CategoryViewHolder> implements OnAdapterItemClickListener<MainCategory> {
+public class CategoryAdapter extends ListAdapter<MainCategory, CategoryAdapter.CategoryViewHolder> {
 
     private Context mCtx;
     private List<MainCategory> categoryList;
@@ -38,15 +37,14 @@ public class CategoryAdapter extends ListAdapter<MainCategory, CategoryAdapter.C
         super(DIFF_UTIL);
     }
 
+    public interface OnAdapterItemClickListener {
+        void onClick(MainCategory mainCategory);
+    }
+
     private OnAdapterItemClickListener onAdapterItemClickListener;
 
     public void setOnAdapterItemClickListener(OnAdapterItemClickListener onAdapterItemClickListener) {
         this.onAdapterItemClickListener = onAdapterItemClickListener;
-    }
-
-    @Override
-    public void onClick(MainCategory mainCategory) {
-
     }
 
     @NonNull

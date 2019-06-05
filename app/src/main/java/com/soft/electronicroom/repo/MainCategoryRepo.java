@@ -22,6 +22,6 @@ public class MainCategoryRepo {
     }
 
     public MainCategory findById(int id){
-        return mainCategoryDAO.findById(id);
+        return  mainCategoryDAO.findById(id);
     }
 }

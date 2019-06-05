@@ -10,10 +10,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.soft.electronicroom.R;
-import com.soft.electronicroom.listener.OnAdapterItemClickListener;
-import com.soft.electronicroom.model.Product;
 import com.soft.electronicroom.model.SubCategory;
 
 public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.ProductViewHolder> {

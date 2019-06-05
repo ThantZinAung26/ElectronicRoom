@@ -1,5 +1,6 @@
 package com.soft.electronicroom;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ public class CategoryFragment extends Fragment {
     private MainCategoryRepo categoryRepo;
     private RecyclerView recyclerView;
 
+    @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,19 +35,22 @@ public class CategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
         categoryAdapter = new CategoryAdapter();
-        categoryRepo = new MainCategoryRepo(MainApplication.getInstance(getContext())
-                .getCreateDatabase()
-                .mainCategoryDAO());
-
+        categoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(getContext()).mainCategoryDAO());
 
         recyclerView = view.findViewById(R.id.recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-//      recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
-
         recyclerView.setAdapter(categoryAdapter);
 
-        FloatingActionButton fab = view.findViewById(R.id.btn_add);
+        final FloatingActionButton fab = view.findViewById(R.id.btn_add);
+        fab.setVisibility(View.INVISIBLE);
+        fab.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                fab.getViewTreeObserver().removeOnPreDrawListener(this);
+                fab.postDelayed(fab::show, 100);
+                return true;
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,32 +58,28 @@ public class CategoryFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        getMainCategory();
+
+        categoryAdapter.setOnAdapterItemClickListener(new CategoryAdapter.OnAdapterItemClickListener() {
+            @Override
+            public void onClick(MainCategory category) {
+                Intent intent = new Intent(CategoryFragment.this.getActivity(), CategoryActivity.class);
+                intent.putExtra(CategoryActivity.CATEGORY_KEY_ID, category.getId());
+                CategoryFragment.this.startActivity(intent);
+            }
+        });
+
         return view;
     }
 
-
-    public void getMainCategory() {
-        class GetMainCategory extends AsyncTask<Void, Void, List<MainCategory>> {
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Thread findThread = new Thread(new Runnable() {
             @Override
-            protected List<MainCategory> doInBackground(Void... voids) {
-                categoryRepo = new MainCategoryRepo(MainApplication.getInstance(getContext())
-                .getCreateDatabase()
-                .mainCategoryDAO());
-                Log.d("TAG", "" + categoryRepo.findAll().size());
-                return categoryRepo.findAll();
+            public void run() {
+                categoryAdapter.submitList(categoryRepo.findAll());
             }
-
-            @Override
-            protected void onPostExecute(List<MainCategory> mainCategories) {
-                super.onPostExecute(mainCategories);
-                categoryAdapter.submitList(mainCategories);
-            }
-        }
-
-        GetMainCategory gm = new GetMainCategory();
-        gm.execute();
+        });
+        findThread.start();
     }
-
 }
