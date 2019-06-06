@@ -3,6 +3,7 @@ package com.soft.electronicroom.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -23,14 +24,15 @@ public class Product implements Serializable {
 
     private double price;
 
-    private int rate;
-
     @ColumnInfo(name = "subCategory_id")
-    private int subCategory;
+    private int subCategoryId;
 
     private String description;
 
-    private boolean favourate;
+    private boolean favourite;
+
+    @Ignore
+    private SubCategory subCategory;
 
     public int getId() {
         return id;
@@ -56,14 +58,6 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -72,19 +66,27 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public boolean isFavourate() {
-        return favourate;
+    public boolean isFavourite() {
+        return favourite;
     }
 
-    public void setFavourate(boolean favourate) {
-        this.favourate = favourate;
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 
-    public int getSubCategory() {
-        return subCategory;
+    public int getSubCategoryId() {
+        return subCategoryId;
     }
 
-    public void setSubCategory(int subCategory) {
+    public void setSubCategoryId(int subCategoryId) {
+        this.subCategoryId = subCategoryId;
+    }
+
+    public void setSubCategory(SubCategory subCategory) {
         this.subCategory = subCategory;
+    }
+
+    public SubCategory getSubCategory() {
+        return subCategory;
     }
 }
