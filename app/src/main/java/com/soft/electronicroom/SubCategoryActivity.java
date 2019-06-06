@@ -1,7 +1,11 @@
 package com.soft.electronicroom;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -14,18 +18,20 @@ import com.soft.electronicroom.database.MainApplication;
 import com.soft.electronicroom.model.MainCategory;
 import com.soft.electronicroom.model.SubCategory;
 import com.soft.electronicroom.repo.MainCategoryRepo;
+import com.soft.electronicroom.repo.SubCatgoryRepo;
 
 public class SubCategoryActivity extends AppCompatActivity {
 
+    static final String SUBCATEGORY_KEY_ID = "subcategory_id";
+
     private TextInputEditText editTitle;
-    private TextInputEditText editReleaseDate;
     private TextInputEditText editCategory;
 
     private SubCategory subCategory;
     private MainCategoryRepo mainCategoryRepo;
+    private SubCatgoryRepo subCatgoryRepo;
     private ArrayAdapter<MainCategory> categoryArrayAdapter;
 
-    private Spinner spinnerDate;
     private Spinner spinnerCategory;
 
     private Button btnSave;
@@ -36,21 +42,90 @@ public class SubCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        editTitle = findViewById(R.id.edtitle);
-        editReleaseDate = findViewById(R.id.edreleaseDate);
-        editCategory = findViewById(R.id.edCategory);
+        int id = getIntent().getIntExtra(SUBCATEGORY_KEY_ID, 0);
 
-        spinnerDate = findViewById(R.id.date_spinner);
+        editTitle = findViewById(R.id.edtitle);
+        editCategory = findViewById(R.id.edCategory);
         spinnerCategory = findViewById(R.id.category_spinner);
 
-//        mainCategoryRepo = new MainCategoryRepo(MainApplication.getInstance(this).getCreateDatabase().mainCategoryDAO());
+        btnSave = findViewById(R.id.btn_save);
 
         categoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        //TODO thread runnable
-//        categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
+        mainCategoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(this).mainCategoryDAO());
+        subCatgoryRepo = new SubCatgoryRepo(MainApplication.getCreateDatabase(this).subCategoryDAO());
 
-        /*MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());*/
+        //TODO thread runnable
+
+        Thread adapterThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
+                Log.d("TAG", "" + mainCategoryRepo.findAll().size());
+                spinnerCategory.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        spinnerCategory.setAdapter(categoryArrayAdapter);
+                    }
+                });
+
+            }
+        });
+
+        adapterThread.start();
+
+        if (id > 0) {
+            Thread findThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    subCategory = subCatgoryRepo.findById(id);
+                    editTitle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            editTitle.setText(subCategory.getName());
+                        }
+                    });
+                    MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());
+                    editCategory.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            editCategory.setText(mainCategory.getName());
+                        }
+                    });
+                }
+            });
+            findThread.start();
+        } else {
+            subCategory = new SubCategory();
+        }
+
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                MainCategory mainCategory = categoryArrayAdapter.getItem(position);
+                editCategory.setText(mainCategory.getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        editCategory.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                return true;
+            }
+        });
+
+        editCategory.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +133,14 @@ public class SubCategoryActivity extends AppCompatActivity {
                 Thread saveThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-
+                        subCategory.setName(editTitle.getText().toString());
+                        MainCategory mainCategory = (MainCategory) spinnerCategory.getSelectedItem();
+                        subCategory.setMainCategoryId(mainCategory.getId());
+                        subCatgoryRepo.save(subCategory);
                     }
                 });
+                saveThread.start();
+                finish();
             }
         });
 

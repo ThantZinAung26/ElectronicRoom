@@ -3,6 +3,7 @@ package com.soft.electronicroom.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -24,6 +25,9 @@ public class SubCategory {
 
     @ColumnInfo(name = "mainCategory_id")
     private int mainCategoryId;
+
+    @Ignore
+    private MainCategory mainCategory;
 
     public int getId() {
         return id;
@@ -49,6 +53,14 @@ public class SubCategory {
         this.mainCategoryId = mainCategoryId;
     }
 
+    public MainCategory getMainCategory() {
+        return mainCategory;
+    }
+
+    public void setMainCategory(MainCategory mainCategory) {
+        this.mainCategory = mainCategory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,11 +68,12 @@ public class SubCategory {
         SubCategory that = (SubCategory) o;
         return id == that.id &&
                 mainCategoryId == that.mainCategoryId &&
-                name.equals(that.name);
+                name.equals(that.name) &&
+                mainCategory.equals(that.mainCategory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, mainCategoryId);
+        return Objects.hash(id, name, mainCategoryId, mainCategory);
     }
 }

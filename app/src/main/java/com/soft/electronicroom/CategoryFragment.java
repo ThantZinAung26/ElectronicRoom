@@ -41,7 +41,7 @@ public class CategoryFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(categoryAdapter);
 
-        final FloatingActionButton fab = view.findViewById(R.id.btn_add);
+        FloatingActionButton fab = view.findViewById(R.id.btn_add);
         fab.setVisibility(View.INVISIBLE);
         fab.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override

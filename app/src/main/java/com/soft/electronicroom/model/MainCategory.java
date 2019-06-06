@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(tableName = "main_category")
-public class MainCategory implements Serializable {
+public class MainCategory {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -44,4 +44,8 @@ public class MainCategory implements Serializable {
         return Objects.hash(id, name);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -35,7 +35,7 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.activity_product, parent, false);
+        View view = inflater.inflate(R.layout.activity_product_view, parent, false);
         return new ProductViewHolder(view);
     }
 
@@ -43,6 +43,7 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SubCategory subCategory = getItem(position);
         holder.editTitle.setText(subCategory.getName());
+        holder.editCategory.setText("Laptop");
     }
 
     public interface OnAdapterItemClickListener {
@@ -54,18 +55,21 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         final TextView editTitle;
-        final TextView editReleaseDate;
         final TextView editCategory;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            editTitle = itemView.findViewById(R.id.edtitle);
-            editReleaseDate = itemView.findViewById(R.id.edreleaseDate);
-            editCategory = itemView.findViewById(R.id.edCategory);
+            editTitle = itemView.findViewById(R.id.product_name);
+            editCategory = itemView.findViewById(R.id.category_tv);
 
-            if (onAdapterItemClickListener != null) {
-                onAdapterItemClickListener.onClick(getItem(getAdapterPosition()));
-            }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAdapterItemClickListener != null) {
+                        onAdapterItemClickListener.onClick(getItem(getAdapterPosition()));
+                    }
+                }
+            });
         }
     }
 

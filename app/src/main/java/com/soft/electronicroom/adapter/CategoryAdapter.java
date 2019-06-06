@@ -18,9 +18,6 @@ import java.util.List;
 
 public class CategoryAdapter extends ListAdapter<MainCategory, CategoryAdapter.CategoryViewHolder> {
 
-    private Context mCtx;
-    private List<MainCategory> categoryList;
-
     private static final DiffUtil.ItemCallback<MainCategory> DIFF_UTIL = new DiffUtil.ItemCallback<MainCategory>() {
         @Override
         public boolean areItemsTheSame(@NonNull MainCategory oldItem, @NonNull MainCategory newItem) {

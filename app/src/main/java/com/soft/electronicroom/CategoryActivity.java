@@ -41,14 +41,19 @@ public class CategoryActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     mainCategory = categoryRepo.findById(id);
-                    final String name = categoryRepo.findById(id).getName();
+                    //final String name = categoryRepo.findById(id).getName();
                     Log.d("ID","id_"+mainCategory.getName());
                     //TODO ERROR categoryName.setText(name);
+                    categoryName.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            categoryName.setText(mainCategory.getName());
+                        }
+                    });
+
                 }
             });
-
             findThread.start();
-
 
         } else {
             mainCategory = new MainCategory();

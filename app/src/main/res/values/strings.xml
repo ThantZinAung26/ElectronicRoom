@@ -8,4 +8,6 @@
     <string name="create_products">Create Products</string>
     <string name="name">Name</string>
     <string name="date">Date</string>
+    <string name="delete">Delete</string>
+    <string name="category">Category</string>
 </resources>

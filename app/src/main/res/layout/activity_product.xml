@@ -44,36 +44,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/releaseDate"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="@string/date"
-        android:textColorHint="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="@+id/productTitle"
-        app:layout_constraintStart_toStartOf="@+id/productTitle"
-        app:layout_constraintTop_toBottomOf="@+id/productTitle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edreleaseDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            tools:text="2019-06-02" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/category_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Category"
+        android:hint="@string/category"
         android:textColorHint="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="@+id/releaseDate"
-        app:layout_constraintStart_toStartOf="@+id/releaseDate"
-        app:layout_constraintTop_toBottomOf="@+id/releaseDate">
+        app:layout_constraintEnd_toEndOf="@+id/productTitle"
+        app:layout_constraintStart_toStartOf="@+id/productTitle"
+        app:layout_constraintTop_toBottomOf="@+id/productTitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edCategory"
@@ -87,19 +67,11 @@
         android:id="@+id/category_spinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/category_name"
         app:layout_constraintEnd_toEndOf="@+id/category_name"
         app:layout_constraintStart_toStartOf="@+id/category_name"
         app:layout_constraintTop_toTopOf="@+id/category_name" />
-
-    <Spinner
-        android:id="@+id/date_spinner"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/releaseDate"
-        app:layout_constraintEnd_toEndOf="@+id/releaseDate"
-        app:layout_constraintStart_toStartOf="@+id/releaseDate"
-        app:layout_constraintTop_toTopOf="@+id/releaseDate" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
@@ -120,7 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:text="Delete"
+        android:text="@string/delete"
         app:layout_constraintEnd_toEndOf="@+id/category_spinner"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/category_spinner"
