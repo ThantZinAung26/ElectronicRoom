@@ -8,6 +8,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(tableName = "product", indices = @Index("subCategory_id"),
                 foreignKeys = @ForeignKey(entity = SubCategory.class,
@@ -29,7 +30,7 @@ public class Product implements Serializable {
 
     private String description;
 
-    private boolean favourite;
+    private float rate;
 
     @Ignore
     private SubCategory subCategory;
@@ -66,12 +67,12 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public boolean isFavourite() {
-        return favourite;
+    public float getRate() {
+        return rate;
     }
 
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 
     public int getSubCategoryId() {
@@ -88,5 +89,24 @@ public class Product implements Serializable {
 
     public SubCategory getSubCategory() {
         return subCategory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id &&
+                Double.compare(product.price, price) == 0 &&
+                subCategoryId == product.subCategoryId &&
+                Float.compare(product.rate, rate) == 0 &&
+                name.equals(product.name) &&
+                description.equals(product.description) &&
+                Objects.equals(subCategory, product.subCategory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, subCategoryId, description, rate, subCategory);
     }
 }
