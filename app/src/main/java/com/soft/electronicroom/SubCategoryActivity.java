@@ -67,6 +67,8 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         adapterThread.start();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (id > 0) {
             Thread findThread = new Thread(new Runnable() {
                 @Override

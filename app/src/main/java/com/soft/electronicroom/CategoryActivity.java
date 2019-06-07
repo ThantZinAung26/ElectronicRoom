@@ -35,6 +35,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         categoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(this).mainCategoryDAO());
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (id > 0) {
 
             Thread findThread = new Thread(new Runnable() {

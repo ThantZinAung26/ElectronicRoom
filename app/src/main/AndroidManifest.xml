@@ -19,6 +19,8 @@
         <activity android:name=".CategoryActivity"/>
         <activity android:name=".SubCategoryActivity"/>
         <activity android:name=".ProductActivity"/>
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity"/>
     </application>
 
 </manifest>

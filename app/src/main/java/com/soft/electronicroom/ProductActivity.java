@@ -82,6 +82,8 @@ public class ProductActivity extends AppCompatActivity {
 
         adapterThread.start();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (id > 0) {
             Log.d("ID", "id_" + id);
             Thread findThread = new Thread(() -> {
