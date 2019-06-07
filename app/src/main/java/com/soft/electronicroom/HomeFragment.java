@@ -15,7 +15,6 @@ import android.view.ViewTreeObserver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.soft.electronicroom.adapter.ProductAdapter;
 import com.soft.electronicroom.database.MainApplication;
-import com.soft.electronicroom.model.Product;
 import com.soft.electronicroom.repo.ProductRepo;
 
 public class HomeFragment extends Fragment {
@@ -50,13 +49,13 @@ public class HomeFragment extends Fragment {
             }
         });
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ProductActivity.class);
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
         });
 
         productAdapter.setOnAdapterItemClickListener(product -> {
-            Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
-            intent.putExtra(ProductActivity.PRODUCT_KEY_ID, product.getId());
+            Intent intent = new Intent(HomeFragment.this.getActivity(), HomeActivity.class);
+            intent.putExtra(HomeActivity.PRODUCT_KEY_ID, product.getId());
             HomeFragment.this.startActivity(intent);
         });
 

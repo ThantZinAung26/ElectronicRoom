@@ -57,6 +57,7 @@ public class ProductFragment extends Fragment {
 
         subCategoryAdapter.setOnItemClickListener(subCategory -> {
             Intent intent = new Intent(getActivity(), SubCategoryActivity.class);
+            intent.putExtra(SubCategoryActivity.SUBCATEGORY_KEY_ID, subCategory.getId());
             startActivity(intent);
         });
 

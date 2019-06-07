@@ -44,8 +44,8 @@ public class SubCategoryAdapter extends ListAdapter<SubCategory, SubCategoryAdap
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SubCategory subCategory = getItem(position);
         holder.editTitle.setText(subCategory.getName());
-        Log.d("ID","id _" + subCategory.getId());
-//        holder.editCategory.setText(subCategory.getMainCategory().getName());
+//        Log.d("ID","id _" + subCategory.getId());
+        holder.editCategory.setText(subCategory.getMainCategory().getName());
     }
 
     public interface OnAdapterItemClickListener {
@@ -57,12 +57,12 @@ public class SubCategoryAdapter extends ListAdapter<SubCategory, SubCategoryAdap
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
         final TextView editTitle;
-//        final TextView editCategory;
+        final TextView editCategory;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             editTitle = itemView.findViewById(R.id.productTv);
-//            editCategory = itemView.findViewById(R.id.categoryTv);
+            editCategory = itemView.findViewById(R.id.categoryTv);
 
             itemView.setOnClickListener(v -> {
                 if (onAdapterItemClickListener != null) {

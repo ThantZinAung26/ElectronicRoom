@@ -2,7 +2,6 @@ package com.soft.electronicroom;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,13 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.soft.electronicroom.adapter.SubCategoryAdapter;
 import com.soft.electronicroom.database.MainApplication;
-import com.soft.electronicroom.model.MainCategory;
 import com.soft.electronicroom.model.Product;
 import com.soft.electronicroom.model.SubCategory;
 import com.soft.electronicroom.repo.ProductRepo;
 import com.soft.electronicroom.repo.SubCatgoryRepo;
 
-public class ProductActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     static final String PRODUCT_KEY_ID = "product_id";
 
@@ -70,13 +68,8 @@ public class ProductActivity extends AppCompatActivity {
 
         Thread adapterThread = new Thread(() -> {
             subCategoryArrayAdapter.addAll(subCatgoryRepo.findAll());
-            Log.d("TAG", "" + subCatgoryRepo.findAll().size());
-            subCategorySpinner.post(new Runnable() {
-                @Override
-                public void run() {
-                    subCategorySpinner.setAdapter(subCategoryArrayAdapter);
-                }
-            });
+//            Log.d("TAG", "" + subCatgoryRepo.findAll().size());
+            subCategorySpinner.post(() -> subCategorySpinner.setAdapter(subCategoryArrayAdapter));
 
         });
 
@@ -85,7 +78,7 @@ public class ProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (id > 0) {
-            Log.d("ID", "id_" + id);
+//            Log.d("ID", "id_" + id);
             Thread findThread = new Thread(() -> {
                 product = productRepo.findById(id);
                 edName.post(() -> edName.setText(product.getName()));

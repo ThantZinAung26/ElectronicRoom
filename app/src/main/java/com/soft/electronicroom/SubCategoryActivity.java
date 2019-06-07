@@ -61,7 +61,7 @@ public class SubCategoryActivity extends AppCompatActivity {
             public void run() {
                 spinnerCategory.post(() -> spinnerCategory.setAdapter(categoryArrayAdapter));
                 categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
-                Log.d("TAG", "" + mainCategoryRepo.findAll().size());
+//                Log.d("TAG", "" + mainCategoryRepo.findAll().size());
             }
         });
 
@@ -77,13 +77,14 @@ public class SubCategoryActivity extends AppCompatActivity {
                     editTitle.post(() -> editTitle.setText(subCategory.getName()));
                     MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());
                     editCategory.post(() -> editCategory.setText(mainCategory.getName()));
-                    for (int i = 0; i < categoryArrayAdapter.getCount(); i++) {
+
+                    /*for (int i = 0; i < categoryArrayAdapter.getCount(); i++) {
                         MainCategory maCategory = categoryArrayAdapter.getItem(i);
                         if (maCategory.getId() == subCategory.getMainCategoryId()) {
                             spinnerCategory.setSelection(i);
                             break;
                         }
-                    }
+                    }*/
                 }
             });
             findThread.start();
