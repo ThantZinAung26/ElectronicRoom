@@ -16,7 +16,7 @@ import java.util.Objects;
                             childColumns = "subCategory_id",
                             onUpdate = ForeignKey.CASCADE,
                             onDelete = ForeignKey.CASCADE))
-public class Product implements Serializable {
+public class Product {
 
     @PrimaryKey(autoGenerate = true)
     private int id;

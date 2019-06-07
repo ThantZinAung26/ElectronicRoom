@@ -11,21 +11,27 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soft.electronicroom.R;
-import com.soft.electronicroom.model.SubCategory;
+import com.soft.electronicroom.model.Product;
 
-public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.ProductViewHolder> {
+public class ProductAdapter extends ListAdapter<Product, ProductAdapter.HomeViewHolder> {
 
-    private static final DiffUtil.ItemCallback<SubCategory> DIFF_UTIL = new DiffUtil.ItemCallback<SubCategory>() {
+    private static final DiffUtil.ItemCallback<Product> DIFF_UTIL = new DiffUtil.ItemCallback<Product>() {
         @Override
-        public boolean areItemsTheSame(@NonNull SubCategory oldItem, @NonNull SubCategory newItem) {
-            return newItem.getId() == oldItem.getId();
+        public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull SubCategory oldItem, @NonNull SubCategory newItem) {
+        public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
             return oldItem.equals(newItem);
         }
     };
+
+    private OnAdapterItemClickListener onAdapterItemClickListener;
+
+    public void setOnAdapterItemClickListener(OnAdapterItemClickListener onAdapterItemClickListener) {
+        this.onAdapterItemClickListener = onAdapterItemClickListener;
+    }
 
     public ProductAdapter() {
         super(DIFF_UTIL);
@@ -33,34 +39,36 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.activity_product_view, parent, false);
-        return new ProductViewHolder(view);
+        View view = inflater.inflate(R.layout.activity_home_view, parent, false);
+        return new HomeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        SubCategory subCategory = getItem(position);
-        holder.editTitle.setText(subCategory.getName());
-        holder.editCategory.setText("Laptop");
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
+        Product product = getItem(position);
+        holder.itemName.setText(product.getName());
+        holder.itemPrice.setText(String.valueOf(product.getPrice()));
+        // holder.itemDescription.setText(product.getDescription());
+        //holder.itemSubCategory.setText("Samsung");
     }
 
-    public interface OnAdapterItemClickListener {
-        void onClick(SubCategory subCategory);
-    }
+    class HomeViewHolder extends RecyclerView.ViewHolder {
 
-    private OnAdapterItemClickListener onAdapterItemClickListener;
+        final TextView itemName;
+        final TextView itemPrice;
+        //final TextView itemDescription;
+        //final TextView itemSubCategory;
+        //final float itemRate;
 
-    class ProductViewHolder extends RecyclerView.ViewHolder {
-
-        final TextView editTitle;
-        final TextView editCategory;
-
-        public ProductViewHolder(@NonNull View itemView) {
+        public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
-            editTitle = itemView.findViewById(R.id.productTv);
-            editCategory = itemView.findViewById(R.id.categoryTv);
+            itemName = itemView.findViewById(R.id.tvName);
+            itemPrice = itemView.findViewById(R.id.tvPrice);
+            //itemDescription = itemView.findViewById(R.id.ed_description);
+            //itemRate = (Float) itemView.findViewById(R.id.ed_rate);
+            //itemSubCategory = itemView.findViewById(R.id.spinnerSubCategory);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,10 +78,12 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
                     }
                 }
             });
+
         }
     }
 
-    public void setOnItemClickListener(OnAdapterItemClickListener onItemClickListener) {
-        this.onAdapterItemClickListener = onItemClickListener;
+    public interface OnAdapterItemClickListener {
+        void onClick(Product product);
     }
+
 }

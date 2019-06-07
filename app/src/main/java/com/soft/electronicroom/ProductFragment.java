@@ -13,9 +13,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.soft.electronicroom.adapter.ProductAdapter;
+import com.soft.electronicroom.adapter.SubCategoryAdapter;
 import com.soft.electronicroom.database.MainApplication;
-import com.soft.electronicroom.model.MainCategory;
 import com.soft.electronicroom.model.SubCategory;
 import com.soft.electronicroom.repo.SubCatgoryRepo;
 
@@ -24,7 +23,7 @@ public class ProductFragment extends Fragment {
     private RecyclerView recyclerView;
     private SubCatgoryRepo subCatgoryRepo;
     private FloatingActionButton fab;
-    private ProductAdapter productAdapter;
+    private SubCategoryAdapter subCategoryAdapter;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -33,13 +32,13 @@ public class ProductFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_product, container, false);
 
-        productAdapter = new ProductAdapter();
+        subCategoryAdapter = new SubCategoryAdapter();
 
         subCatgoryRepo = new SubCatgoryRepo(MainApplication.getCreateDatabase(getContext()).subCategoryDAO());
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(productAdapter);
+        recyclerView.setAdapter(subCategoryAdapter);
 
         fab = view.findViewById(R.id.btn_add);
         fab.setVisibility(View.INVISIBLE);
@@ -51,21 +50,15 @@ public class ProductFragment extends Fragment {
                 return true;
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SubCategoryActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SubCategoryActivity.class);
+            startActivity(intent);
         });
 
-        productAdapter.setOnItemClickListener(new ProductAdapter.OnAdapterItemClickListener() {
-            @Override
-            public void onClick(SubCategory subCategory) {
-                Intent intent = new Intent(ProductFragment.this.getActivity(), SubCategoryActivity.class);
-                intent.putExtra(SubCategoryActivity.SUBCATEGORY_KEY_ID, subCategory.getId());
-                ProductFragment.this.startActivity(intent);
-            }
+        subCategoryAdapter.setOnItemClickListener(subCategory -> {
+            Intent intent = new Intent(ProductFragment.this.getActivity(), SubCategoryActivity.class);
+            intent.putExtra(SubCategoryActivity.SUBCATEGORY_KEY_ID, subCategory.getId());
+            ProductFragment.this.startActivity(intent);
         });
 
         return view;
@@ -74,24 +67,14 @@ public class ProductFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Thread findThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                productAdapter.submitList(subCatgoryRepo.findAll());
-            }
-        });
+        Thread findThread = new Thread(() -> subCategoryAdapter.submitList(subCatgoryRepo.findAll()));
         findThread.start();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Thread findThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                productAdapter.submitList(subCatgoryRepo.findAll());
-            }
-        });
+        Thread findThread = new Thread(() -> subCategoryAdapter.submitList(subCatgoryRepo.findAll()));
         findThread.start();
     }
 }

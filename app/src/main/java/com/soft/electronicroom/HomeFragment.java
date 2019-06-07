@@ -1,9 +1,7 @@
 package com.soft.electronicroom;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.soft.electronicroom.adapter.HomeAdapter;
+import com.soft.electronicroom.adapter.ProductAdapter;
 import com.soft.electronicroom.database.MainApplication;
 import com.soft.electronicroom.model.Product;
 import com.soft.electronicroom.repo.ProductRepo;
@@ -25,7 +23,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProductRepo productRepo;
     private FloatingActionButton fab;
-    private HomeAdapter homeAdapter;
+    private ProductAdapter productAdapter;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -34,12 +32,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         // Inflate the layout for this fragment
 
-        homeAdapter = new HomeAdapter();
+        productAdapter = new ProductAdapter();
         productRepo = new ProductRepo(MainApplication.getCreateDatabase(getContext()).productDAO());
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(homeAdapter);
+        recyclerView.setAdapter(productAdapter);
 
         fab = view.findViewById(R.id.btn_add);
         fab.setVisibility(View.INVISIBLE);
@@ -59,7 +57,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeAdapter.setOnAdapterItemClickListener(new HomeAdapter.OnAdapterItemClickListener() {
+        productAdapter.setOnAdapterItemClickListener(new ProductAdapter.OnAdapterItemClickListener() {
             @Override
             public void onClick(Product product) {
                 Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
@@ -74,24 +72,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Thread findThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                homeAdapter.submitList(productRepo.findAll());
-            }
-        });
+        Thread findThread = new Thread(() -> productAdapter.submitList(productRepo.findAll()));
         findThread.start();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Thread findThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                homeAdapter.submitList(productRepo.findAll());
-            }
-        });
+        Thread findThread = new Thread(() -> productAdapter.submitList(productRepo.findAll()));
         findThread.start();
     }
 

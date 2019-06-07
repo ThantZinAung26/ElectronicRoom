@@ -56,20 +56,12 @@ public class SubCategoryActivity extends AppCompatActivity {
         mainCategoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(this).mainCategoryDAO());
         subCatgoryRepo = new SubCatgoryRepo(MainApplication.getCreateDatabase(this).subCategoryDAO());
 
-        //TODO thread runnable
-
         Thread adapterThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                spinnerCategory.post(() -> spinnerCategory.setAdapter(categoryArrayAdapter));
                 categoryArrayAdapter.addAll(mainCategoryRepo.findAll());
                 Log.d("TAG", "" + mainCategoryRepo.findAll().size());
-                spinnerCategory.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        spinnerCategory.setAdapter(categoryArrayAdapter);
-                    }
-                });
-
             }
         });
 
@@ -80,19 +72,16 @@ public class SubCategoryActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     subCategory = subCatgoryRepo.findById(id);
-                    editTitle.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            editTitle.setText(subCategory.getName());
-                        }
-                    });
+                    editTitle.post(() -> editTitle.setText(subCategory.getName()));
                     MainCategory mainCategory = mainCategoryRepo.findById(subCategory.getMainCategoryId());
-                    editCategory.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            editCategory.setText(mainCategory.getName());
+                    editCategory.post(() -> editCategory.setText(mainCategory.getName()));
+                    for (int i = 0; i < categoryArrayAdapter.getCount(); i++) {
+                        MainCategory maCategory = categoryArrayAdapter.getItem(i);
+                        if (maCategory.getId() == subCategory.getMainCategoryId()) {
+                            spinnerCategory.setSelection(i);
+                            break;
                         }
-                    });
+                    }
                 }
             });
             findThread.start();
@@ -113,18 +102,13 @@ public class SubCategoryActivity extends AppCompatActivity {
             }
         });
 
-        editCategory.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return true;
-            }
-        });
+        editCategory.setOnKeyListener((v, keyCode, event) -> true);
 
-        editCategory.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
+        editCategory.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                spinnerCategory.performClick();
             }
+            return true;
         });
 
 

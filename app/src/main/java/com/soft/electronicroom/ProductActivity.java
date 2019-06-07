@@ -12,11 +12,11 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.soft.electronicroom.adapter.ProductAdapter;
+import com.soft.electronicroom.adapter.SubCategoryAdapter;
 import com.soft.electronicroom.database.MainApplication;
+import com.soft.electronicroom.model.MainCategory;
 import com.soft.electronicroom.model.Product;
 import com.soft.electronicroom.model.SubCategory;
 import com.soft.electronicroom.repo.ProductRepo;
@@ -36,7 +36,7 @@ public class ProductActivity extends AppCompatActivity {
     private Button btnSave;
     private Button btn_Delete;
 
-    private ProductAdapter productAdapter;
+    private SubCategoryAdapter subCategoryAdapter;
 
     private Product product;
 
@@ -63,7 +63,7 @@ public class ProductActivity extends AppCompatActivity {
 
         subCategoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        productAdapter = new ProductAdapter();
+        subCategoryAdapter = new SubCategoryAdapter();
         productRepo = new ProductRepo(MainApplication.getCreateDatabase(this).productDAO());
 
         subCatgoryRepo = new SubCatgoryRepo(MainApplication.getCreateDatabase(this).subCategoryDAO());
@@ -83,6 +83,7 @@ public class ProductActivity extends AppCompatActivity {
         adapterThread.start();
 
         if (id > 0) {
+            Log.d("ID", "id_" + id);
             Thread findThread = new Thread(() -> {
                 product = productRepo.findById(id);
                 edName.post(() -> edName.setText(product.getName()));
@@ -124,34 +125,26 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread saveThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        product.setName(edName.getText().toString());
-                        product.setPrice(Double.parseDouble(edPrice.getText().toString()));
-                        product.setDescription(edDescription.getText().toString());
-                        SubCategory subCategory = (SubCategory) subCategorySpinner.getSelectedItem();
-                        product.setSubCategoryId(subCategory.getId());
-                        productRepo.save(product);
-                    }
-                });
-                saveThread.start();
-                finish();
-            }
+        btnSave.setOnClickListener(v -> {
+            Thread saveThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    product.setName(edName.getText().toString());
+                    product.setPrice(Double.parseDouble(edPrice.getText().toString()));
+                    product.setDescription(edDescription.getText().toString());
+                    SubCategory subCategory = (SubCategory) subCategorySpinner.getSelectedItem();
+                    product.setSubCategoryId(subCategory.getId());
+                    productRepo.save(product);
+                }
+            });
+            saveThread.start();
+            finish();
         });
 
         btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread deleteThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        productRepo.delete(product);
-                    }
-                });
+                Thread deleteThread = new Thread(() -> productRepo.delete(product));
 
                 deleteThread.start();
                 finish();
