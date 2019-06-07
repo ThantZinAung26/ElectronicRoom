@@ -111,44 +111,32 @@ public class ProductActivity extends AppCompatActivity {
         });
 
 
-        edSubCategory.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                return true;
-            }
-        });
+        edSubCategory.setOnKeyListener((v, keyCode, event) -> true);
 
-        edSubCategory.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
+        edSubCategory.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                subCategorySpinner.performClick();
             }
+            return true;
         });
 
         btnSave.setOnClickListener(v -> {
-            Thread saveThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    product.setName(edName.getText().toString());
-                    product.setPrice(Double.parseDouble(edPrice.getText().toString()));
-                    product.setDescription(edDescription.getText().toString());
-                    SubCategory subCategory = (SubCategory) subCategorySpinner.getSelectedItem();
-                    product.setSubCategoryId(subCategory.getId());
-                    productRepo.save(product);
-                }
+            Thread saveThread = new Thread(() -> {
+                product.setName(edName.getText().toString());
+                product.setPrice(Double.parseDouble(edPrice.getText().toString()));
+                product.setDescription(edDescription.getText().toString());
+                SubCategory subCategory = (SubCategory) subCategorySpinner.getSelectedItem();
+                product.setSubCategoryId(subCategory.getId());
+                productRepo.save(product);
             });
             saveThread.start();
             finish();
         });
 
-        btn_Delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread deleteThread = new Thread(() -> productRepo.delete(product));
-
-                deleteThread.start();
-                finish();
-            }
+        btn_Delete.setOnClickListener(v -> {
+            Thread deleteThread = new Thread(() -> productRepo.delete(product));
+            deleteThread.start();
+            finish();
         });
 
     }

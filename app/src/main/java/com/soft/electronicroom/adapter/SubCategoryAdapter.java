@@ -1,5 +1,6 @@
 package com.soft.electronicroom.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class SubCategoryAdapter extends ListAdapter<SubCategory, SubCategoryAdap
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         SubCategory subCategory = getItem(position);
         holder.editTitle.setText(subCategory.getName());
+        Log.d("ID","id _" + subCategory.getId());
 //        holder.editCategory.setText(subCategory.getMainCategory().getName());
     }
 

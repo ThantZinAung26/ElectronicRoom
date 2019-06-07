@@ -66,15 +66,12 @@ public class SubCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubCategory that = (SubCategory) o;
-        return id == that.id &&
-                mainCategoryId == that.mainCategoryId &&
-                name.equals(that.name) &&
-                mainCategory.equals(that.mainCategory);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, mainCategoryId, mainCategory);
+        return Objects.hash(id);
     }
 
     @Override

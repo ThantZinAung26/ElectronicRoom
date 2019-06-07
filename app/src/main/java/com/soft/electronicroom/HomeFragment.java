@@ -49,21 +49,15 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProductActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ProductActivity.class);
+            startActivity(intent);
         });
 
-        productAdapter.setOnAdapterItemClickListener(new ProductAdapter.OnAdapterItemClickListener() {
-            @Override
-            public void onClick(Product product) {
-                Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
-                intent.putExtra(ProductActivity.PRODUCT_KEY_ID, product.getId());
-                HomeFragment.this.startActivity(intent);
-            }
+        productAdapter.setOnAdapterItemClickListener(product -> {
+            Intent intent = new Intent(HomeFragment.this.getActivity(), ProductActivity.class);
+            intent.putExtra(ProductActivity.PRODUCT_KEY_ID, product.getId());
+            HomeFragment.this.startActivity(intent);
         });
 
         return view;
