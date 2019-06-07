@@ -1,5 +1,7 @@
 package com.soft.electronicroom.adapter;
 
+import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,39 +28,58 @@ public class HomeAdapter extends ListAdapter<Product, HomeAdapter.HomeViewHolder
         }
     };
 
-    public HomeAdapter(){
+    private OnAdapterItemClickListener onAdapterItemClickListener;
+
+    public void setOnAdapterItemClickListener(OnAdapterItemClickListener onAdapterItemClickListener) {
+        this.onAdapterItemClickListener = onAdapterItemClickListener;
+    }
+
+    public HomeAdapter() {
         super(DIFF_UTIL);
     }
 
     @NonNull
     @Override
     public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.activity_home_view, parent, false);
+        return new HomeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-
+        Product product = getItem(position);
+        holder.itemName.setText(product.getName());
+        holder.itemPrice.setText(String.valueOf(product.getPrice()));
+        // holder.itemDescription.setText(product.getDescription());
+        //holder.itemSubCategory.setText("Samsung");
     }
 
     class HomeViewHolder extends RecyclerView.ViewHolder {
 
         final TextView itemName;
         final TextView itemPrice;
-        final TextView itemDescription;
+        //final TextView itemDescription;
+        //final TextView itemSubCategory;
         //final float itemRate;
 
         public HomeViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemName = itemView.findViewById(R.id.ed_name);
-            itemPrice = itemView.findViewById(R.id.ed_price);
-            itemDescription = itemView.findViewById(R.id.ed_description);
+            itemName = itemView.findViewById(R.id.tvName);
+            itemPrice = itemView.findViewById(R.id.tvPrice);
+            //itemDescription = itemView.findViewById(R.id.ed_description);
             //itemRate = (Float) itemView.findViewById(R.id.ed_rate);
+            //itemSubCategory = itemView.findViewById(R.id.spinnerSubCategory);
+
+
+            if (onAdapterItemClickListener != null) {
+                onAdapterItemClickListener.onClick(getItem(getAdapterPosition()));
+            }
 
         }
     }
 
-    public interface OnAdapterItemClickListener{
+    public interface OnAdapterItemClickListener {
         void onClick(Product product);
     }
 

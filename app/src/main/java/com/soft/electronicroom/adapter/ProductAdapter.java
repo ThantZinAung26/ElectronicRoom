@@ -59,8 +59,8 @@ public class ProductAdapter extends ListAdapter<SubCategory, ProductAdapter.Prod
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            editTitle = itemView.findViewById(R.id.product_name);
-            editCategory = itemView.findViewById(R.id.category_tv);
+            editTitle = itemView.findViewById(R.id.productTv);
+            editCategory = itemView.findViewById(R.id.categoryTv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/product_name"
+                android:id="@+id/productTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -34,7 +34,7 @@
                 tools:text="MSI" />
 
             <TextView
-                android:id="@+id/category_tv"
+                android:id="@+id/categoryTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
