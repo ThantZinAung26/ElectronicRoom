@@ -49,6 +49,7 @@ public class SubCategoryActivity extends AppCompatActivity {
         spinnerCategory = findViewById(R.id.category_spinner);
 
         btnSave = findViewById(R.id.btn_save);
+        btn_Delete = findViewById(R.id.delete_btn);
 
         categoryArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
@@ -130,33 +131,26 @@ public class SubCategoryActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Thread saveThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        subCategory.setName(editTitle.getText().toString());
-                        MainCategory mainCategory = (MainCategory) spinnerCategory.getSelectedItem();
-                        subCategory.setMainCategoryId(mainCategory.getId());
-                        subCatgoryRepo.save(subCategory);
-                    }
+                Thread saveThread = new Thread(() -> {
+                    subCategory.setName(editTitle.getText().toString());
+                    MainCategory mainCategory = (MainCategory) spinnerCategory.getSelectedItem();
+                    subCategory.setMainCategoryId(mainCategory.getId());
+                    subCatgoryRepo.save(subCategory);
                 });
                 saveThread.start();
                 finish();
             }
         });
 
-        btn_Delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread deleteThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        subCatgoryRepo.delete(subCategory);
-                    }
-                });
-
-                deleteThread.start();
-                finish();
-            }
+        btn_Delete.setOnClickListener(v -> {
+            Thread deleteThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    subCatgoryRepo.delete(subCategory);
+                }
+            });
+            deleteThread.start();
+            finish();
         });
 
     }

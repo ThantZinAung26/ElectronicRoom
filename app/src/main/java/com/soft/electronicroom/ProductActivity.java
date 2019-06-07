@@ -66,42 +66,30 @@ public class ProductActivity extends AppCompatActivity {
         productAdapter = new ProductAdapter();
         productRepo = new ProductRepo(MainApplication.getCreateDatabase(this).productDAO());
 
-        Thread adapterThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                subCategoryArrayAdapter.addAll(subCatgoryRepo.findAll());
-                Log.d("TAG", "" + subCatgoryRepo.findAll().size());
-                subCategorySpinner.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        subCategorySpinner.setAdapter(subCategoryArrayAdapter);
-                    }
-                });
+        subCatgoryRepo = new SubCatgoryRepo(MainApplication.getCreateDatabase(this).subCategoryDAO());
 
-            }
+        Thread adapterThread = new Thread(() -> {
+            subCategoryArrayAdapter.addAll(subCatgoryRepo.findAll());
+            Log.d("TAG", "" + subCatgoryRepo.findAll().size());
+            subCategorySpinner.post(new Runnable() {
+                @Override
+                public void run() {
+                    subCategorySpinner.setAdapter(subCategoryArrayAdapter);
+                }
+            });
+
         });
 
         adapterThread.start();
 
         if (id > 0) {
-            Thread findThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                     product = productRepo.findById(id);
-                    edName.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            edName.setText(product.getName());
-                        }
-                    });
-                    SubCategory subCategory = subCatgoryRepo.findById(product.getSubCategoryId());
-                    edSubCategory.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            edSubCategory.setText(subCategory.getName());
-                        }
-                    });
-                }
+            Thread findThread = new Thread(() -> {
+                product = productRepo.findById(id);
+                edName.post(() -> edName.setText(product.getName()));
+                edPrice.post(() -> edPrice.setText(String.valueOf(product.getPrice())));
+                edDescription.post(() -> edDescription.setText(product.getDescription()));
+                SubCategory subCategory = subCatgoryRepo.findById(product.getSubCategoryId());
+                edSubCategory.post(() -> edSubCategory.setText(subCategory.getName()));
             });
             findThread.start();
         } else {
@@ -136,22 +124,24 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
-       /* btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Thread saveThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        subCategory.setName(editTitle.getText().toString());
-                        MainCategory mainCategory = (MainCategory) spinnerCategory.getSelectedItem();
-                        subCategory.setMainCategoryId(mainCategory.getId());
-                        subCatgoryRepo.save(subCategory);
+                        product.setName(edName.getText().toString());
+                        product.setPrice(Double.parseDouble(edPrice.getText().toString()));
+                        product.setDescription(edDescription.getText().toString());
+                        SubCategory subCategory = (SubCategory) subCategorySpinner.getSelectedItem();
+                        product.setSubCategoryId(subCategory.getId());
+                        productRepo.save(product);
                     }
                 });
                 saveThread.start();
                 finish();
             }
-        });*/
+        });
 
         btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override

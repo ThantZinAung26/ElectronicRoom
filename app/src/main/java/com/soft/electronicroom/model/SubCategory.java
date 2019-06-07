@@ -76,4 +76,9 @@ public class SubCategory {
     public int hashCode() {
         return Objects.hash(id, name, mainCategoryId, mainCategory);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
