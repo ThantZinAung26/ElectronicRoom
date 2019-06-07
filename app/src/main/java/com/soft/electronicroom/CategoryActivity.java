@@ -27,6 +27,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final int id = getIntent().getIntExtra(CATEGORY_KEY_ID,0);
 
@@ -34,8 +35,6 @@ public class CategoryActivity extends AppCompatActivity {
         saveBtn = findViewById(R.id.categorySave);
 
         categoryRepo = new MainCategoryRepo(MainApplication.getCreateDatabase(this).mainCategoryDAO());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (id > 0) {
 
@@ -73,6 +72,7 @@ public class CategoryActivity extends AppCompatActivity {
                     }
                 });
                 saveThread.start();
+                saveCategoryCheck();
                 finish();
             }
         });
